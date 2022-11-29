@@ -23,6 +23,16 @@ Constraints:
 First, we will add base solutions for the first two rows.
 And then by incrementing the row, we will reuse the previous solution by summation.
 '''
+
+#**********************************
+#*********** VERSION 1 ************
+#**********************************
+
+'''
+Time: O(N^2)
+Memory: O(N)
+'''
+
 class Solution:
     def generate(self, numRows: int) -> List[List[int]]:
         res = [[1]]
@@ -34,4 +44,26 @@ class Solution:
                 for j in range(1, i):
                     res[-1].append(res[-2][j-1]+res[-2][j])
                 res[-1].append(1)
+        return res
+
+#**********************************
+#*********** VERSION 2 ************
+#**********************************
+
+'''
+Time: O(N^2)
+Memory: O(N)
+'''
+
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        if numRows == 1:
+            return [[1]]
+        res = [[1], [1, 1]]
+        for i in range(2, numRows):
+            tmp = [1]
+            for j in range((i + 1) // 2):
+                tmp.append(sum(res[-1][j:j+2]))
+            tmp += tmp[0 : i // 2][::-1]
+            res.append(tmp)
         return res
